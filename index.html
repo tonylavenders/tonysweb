@@ -79,95 +79,37 @@ div.fadeMe {
 
 </head>
 
-<body style="background: linear-gradient(55deg, #0fb8ad 0%, #1fc8db 51%, #2cb5e8 85%);">
-<! –– Check for AdBlocker by displaying a 1x1 pixel ad ––>
-<div id="wrapfabtest">
-    <div class="adBanner">
-    </div>
-</div>
-
-<! –– If JS is disabled this block will be displayed ––>
-<div id="JSDiv" class="fadeMe" style="background-color: white; border: 2; width:100%; height:100%; margin:0; left:0; top:0;"> 
-<h1  style="text-align: center; color: red">Please Enable JavaScript and refresh the page to Unsubscribe Successfully!</h1>
-<script>document.getElementById('JSDiv').style.display = "none";</script>
-</div>
-
-<! –– If adblock detected this popup will be displayed ––>
-<div class="overlay" id="overlay"> <div class="popup"> <h2 style="color: #3661ff; text-decoration: bold; text-align: center;"> Please turn off your AdBlocker to unsubscribe successfully!</h2>
-</br>
-</br>
-<p style="color: #4CAF50; text-align: center;"> Some message to your users</p> </br> 
-
-<button class="button"  onClick="window.location.reload();">Refresh Page</button> </div>
-<script>document.getElementById('overlay').style.display = "none";</script>
-</div>
-
-<! –– Unsub card displayed when AdBlock is not detected ––>
-    <div class="unsubbox" id="unsubbox">
-        <h4 style="text-align: center;">I want to unsubscribe from future emails</h4>
-        <input type="text" id="email" readonly="readonly" style="width: 100%" />
-        <br/><br/>
-        <button class="button" style="position: relative;transform: translateX(0.5%);"onclick="unsubscribe()">Unsubscribe me</button><br/><br/>
-        <!-- button onclick="rsubscribe()">Resubscribe</button -->
-    </div>
-
-<script type="text/javascript">
-$(document).ready(function(){
-    // check the height of the pixel ad
-    if($("#wrapfabtest").height() > 0) {
-        
-    } else {
-        //when adblock is detected, show the popup to pause AdBlock and hide the Unsub card
-        document.getElementById('overlay').style.display = "block";
-        document.getElementById('unsubbox').style.display = "none";
-
-        
-    }
-});
-  </script>
+<body>
+        <h1>You are successfully unsubscribed</h1>
+    </body>
 
     <script>
+        //Javascript
+        // Should be true only if your server is url encoding the URL on unsubscribe landing page
+        var isReEncode = false;
         // on  page load, fetch the email id of the user.
-        window.onload = function() {
-            $WZRK_WR.getEmail();
+        window.onload = function () {
+            $WZRK_WR.getEmail(isReEncode);
+            unsubscribe();
         };
-
-        // will be called after the email id of the user has been fetched
-        function wzrk_email_fetched(emailStr) {
-            document.getElementById("email").value = emailStr;
-        }
 
         // will be called after the subscription preferences for the user have been updated
         function wzrk_email_subscription(status) {
             //status 0 : unsubscribed, status 1 : subscribed
             // todo - you can show a success message to the user from here
-            var statusLabel = 'subscribed';
+            var statusLabel = "subscribed";
             if (status == 0) {
-                statusLabel = 'unsubscribed';
+                statusLabel = "unsubscribed";
             }
             alert("You've been " + statusLabel);
-
         }
-
         // call this function to unsubscribe the user
-        function unsubscribe() {
-            $WZRK_WR.unSubEmail();
-            checkInternetConnection();
-            
-            if (isOnLine) {
-                alert("Unsubscribed successfully!");
-            } 
-            
-
+        function unsubscribe(isReEncode) {
+            $WZRK_WR.unSubEmail(isReEncode);
         }
-
         // call this function to resubscribe the user
-        function resubscribe() {
-            $WZRK_WR.subEmail();
+        function resubscribe(isReEncode) {
+            $WZRK_WR.subEmail(isReEncode);
         }
     </script>
-
-
-</body>
-
 </html>
